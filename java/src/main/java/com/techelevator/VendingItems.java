@@ -1,6 +1,6 @@
 package com.techelevator;
 
-public abstract class VendingItems {
+public class VendingItems implements Vendable{
 
 	private String slotNumber;
 	private String name;

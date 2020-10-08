@@ -1,16 +1,10 @@
 package com.techelevator.view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import com.techelevator.Chip;
-import com.techelevator.Vendable;
 
 public class Menu {
 
@@ -58,25 +52,5 @@ public class Menu {
 		out.flush();
 	}
 	
-	public String[] getVendablesToDisplay() throws FileNotFoundException {
-		File inputFile = new File("vendingmachine.csv");
-		List<Vendable> vendableItemsList = new ArrayList<>();
-		try (Scanner input = new Scanner(inputFile);) {
-			while (input.hasNextLine()) {
-				String[] itemLine = input.nextLine().split("\\|");
-				if (itemLine[3].equals("Chip")) {
-					//Chip potatoCrisps = new Chip();
-				}
-			}
-		}
-			
-			
-		
-		
-		
-		
-		
-		//for (Vendable item : )
-		return null;
-	}
+	
 }
