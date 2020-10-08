@@ -1,13 +1,13 @@
 package com.techelevator;
 
-public class VendingItems implements Vendable{
+public class VendingItem implements Vendable{
 
 	private String slotNumber;
 	private String name;
 	private int cost;
-	private int quantity;
+	private int quantity = 5;
 	
-	public VendingItems(String slotNumber, String name, int cost) {
+	public VendingItem(String slotNumber, String name, int cost) {
 		this.slotNumber = slotNumber;
 		this.name = name;
 		this.cost = cost;
@@ -40,8 +40,7 @@ public class VendingItems implements Vendable{
 	public int getQuantity() {
 		return quantity;
 	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void decrementQuantity() {
+		this.quantity--;
 	}
 }

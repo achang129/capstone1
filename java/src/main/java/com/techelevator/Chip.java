@@ -1,6 +1,6 @@
 package com.techelevator;
 
-public class Chip extends VendingItems implements Vendable {
+public class Chip extends VendingItem implements Vendable {
 
 	public Chip(String slotNumber, String name, int cost) {
 		super(slotNumber, name, cost);
@@ -39,7 +39,7 @@ public class Chip extends VendingItems implements Vendable {
 		return super.getQuantity();
 	}
 	
-	public void setQuantity(int quantity) {
-		super.setQuantity(quantity);
+	public void decrementQuantity() {
+		super.decrementQuantity();
 	}
 }

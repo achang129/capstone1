@@ -1,6 +1,6 @@
 package com.techelevator;
 
-public class Drink extends VendingItems implements Vendable {
+public class Drink extends VendingItem implements Vendable {
 
 	public Drink(String slotNumber, String name, int cost) {
 		super(slotNumber, name, cost);
@@ -39,7 +39,7 @@ public class Drink extends VendingItems implements Vendable {
 		return super.getQuantity();
 	}
 	
-	public void setQuantity(int quantity) {
-		super.setQuantity(quantity);
+	public void decrementQuantity() {
+		super.decrementQuantity();
 	}
 }
