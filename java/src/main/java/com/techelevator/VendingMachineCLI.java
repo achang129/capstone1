@@ -30,7 +30,7 @@ public class VendingMachineCLI {
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) { 
 				//here is the showing of the products
 				for (Vendable item : VendableItems.getVendablesList()) {
-					System.out.printf("---\nItem: %s   %s\nPrice: $%d\nQuantity Left: %d", 
+					System.out.printf("---\nItem: %s   %s\nPrice: $%d\nQuantity Left: %d\n", 
 							item.getSlotNumber(), item.getName(), item.getCost(), item.getQuantity());
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
