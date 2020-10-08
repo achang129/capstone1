@@ -12,7 +12,7 @@ public class VendingItem implements Vendable{
 		this.name = name;
 		this.cost = cost;
 	}
-	
+
 	public String getSlotNumber() {
 		return slotNumber;
 	}
