@@ -25,13 +25,13 @@ public class VendableItems {
 				String[] itemLine = input.nextLine().split("\\|");
 				switch(itemLine[3]) {	
 				
-				case"Chip": item = new Chip(itemLine[0], itemLine[1], (int) (Double.parseDouble(itemLine[2])*100));
+				case"Chip": item = new Chip(itemLine[0], itemLine[1], (Double.parseDouble(itemLine[2])));
 				break;
-				case"Candy": item = new Candy(itemLine[0], itemLine[1], (int) (Double.parseDouble(itemLine[2])*100));
+				case"Candy": item = new Candy(itemLine[0], itemLine[1], (Double.parseDouble(itemLine[2])));
 				break;
-				case"Drink": item = new Drink(itemLine[0], itemLine[1], (int) (Double.parseDouble(itemLine[2])*100));
+				case"Drink": item = new Drink(itemLine[0], itemLine[1], (Double.parseDouble(itemLine[2])));
 				break;
-				case"Gum": item = new Gum(itemLine[0], itemLine[1], (int) (Double.parseDouble(itemLine[2])*100));
+				case"Gum": item = new Gum(itemLine[0], itemLine[1], (Double.parseDouble(itemLine[2])));
 				break;
 				default: item = new VendingItem("DEFAULT", "N/A", 0);
 				break;

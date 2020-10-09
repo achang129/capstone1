@@ -4,10 +4,10 @@ public class VendingItem implements Vendable{
 
 	private String slotNumber;
 	private String name;
-	private int cost;
+	private double cost;
 	private int quantity = 5;
 	
-	public VendingItem(String slotNumber, String name, int cost) {
+	public VendingItem(String slotNumber, String name, double cost) {
 		this.slotNumber = slotNumber;
 		this.name = name;
 		this.cost = cost;
@@ -29,11 +29,11 @@ public class VendingItem implements Vendable{
 		this.name = name;
 	}
 
-	public int getCost() {
+	public double getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
 	}
 

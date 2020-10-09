@@ -2,7 +2,7 @@ package com.techelevator;
 
 public class Gum extends VendingItem implements Vendable {
 
-	public Gum(String slotNumber, String name, int cost) {
+	public Gum(String slotNumber, String name, double cost) {
 		super(slotNumber, name, cost);
 	}
 	
@@ -26,11 +26,11 @@ public class Gum extends VendingItem implements Vendable {
 		super.setName(name);
 	}
 	
-	public int getCost() {
+	public double getCost() {
 		return super.getCost();
 	}
 
-	public void setCost(int cost) {
+	public void setCost(double cost) {
 		super.setCost(cost);
 	}
 	
