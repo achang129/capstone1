@@ -64,18 +64,42 @@ public class VendingMachineCLI {
 							System.out.printf("---\nItem: %s   %s\nPrice: $%d\nQuantity Left: %d\n", 
 									item.getSlotNumber(), item.getName(), item.getCost(), item.getQuantity());
 						}
-//						System.out.println("Enter the code for the item you want: ");
-//						String itemInput = vendingScanner.nextLine();
-//						
-//						if (!itemInput.contains(product.getSlotNumber())) {
-//							System.out.println("That product code does not exist");
-//						} else if (itemInput.contains(product.getSlotNumber()) && product.getQuantity() == 0) {
-//							System.out.println("Sorry, but that item is sold out");
-//						} else if (itemInput.contains(product.getSlotNumber()) && product.getCost() > currentMoney){
-//							System.out.println("Sorry, but you do not have enough money for this product");
-//						} else {
-//							currentMoney -= product.getCost();
-//						}
+						System.out.println("Enter the code for the item you want: ");
+						String itemInput = vendingScanner.nextLine();
+						int wantedItemIndex = 0;
+						Object[] array = VendableItems.getVendablesList().toArray();
+						
+						for (int i = 0; i < array.length; i++) {
+							if (array[i].equals(itemInput)) {
+								if (((Vendable) array[i]).getQuantity()>0) {//had to case these to Vendable from Object lol
+									if(((Vendable) array[i]).getCost()<=currentMoney) {
+										currentMoney -= ((Vendable) array[i]).getCost();
+										((Vendable) array[i]).decrementQuantity();
+										wantedItemIndex = 4;
+									}else {
+										if(wantedItemIndex!=4)
+											wantedItemIndex = 1;
+									}
+								}else {
+									if(wantedItemIndex!=4)
+										wantedItemIndex = 2;
+								}
+							}else {
+								if(wantedItemIndex!=4)
+									wantedItemIndex = 3;
+							}
+						}
+						switch(wantedItemIndex) {
+						case 1:System.out.println("The item costs more than you inserted");
+						break;
+						case 2:System.out.println("The item is out of stock");
+						break;
+						case 3:System.out.println("No item is assigned to this slot");
+						break;
+						case 4:
+						
+						}
+								
 					}
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {

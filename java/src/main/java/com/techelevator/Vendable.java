@@ -6,4 +6,5 @@ public interface Vendable {
 	public String getName();
 	public int getCost();
 	public int getQuantity();
+	public void decrementQuantity();
 }
