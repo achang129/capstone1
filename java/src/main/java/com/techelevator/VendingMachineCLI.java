@@ -47,13 +47,17 @@ public class VendingMachineCLI {
 					choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 					if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 						System.out.println("\nEnter Money in Whole Dollar Amounts");
-						System.out.println("Enter 0 to Stop Feeding Money");
+						System.out.println("-- $1, $2, $5, or $10 --");
+						System.out.println("Enter $0 to Stop Feeding Money");
 						while (true) {
 							System.out.print("\n$");
 							String moneyInput = vendingScanner.nextLine();
-							int moneyAmount = 0;
+							double moneyAmount = 0;
 							try{
-								moneyAmount = Integer.parseInt(moneyInput);
+								moneyAmount = Double.parseDouble(moneyInput);
+								if (!isProperDollarAmount(moneyAmount)) {
+									moneyAmount = 0;
+								}
 							}catch(NumberFormatException e) {
 								System.out.printf("Error: %s\n", e.getLocalizedMessage());
 								cashout();
@@ -121,7 +125,7 @@ public class VendingMachineCLI {
 						default:
 							break;
 						}								
-					}
+					} 
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
 					cashout();
@@ -147,14 +151,12 @@ public class VendingMachineCLI {
 		    change %= 10;
 		    int nickels = Math.round((int)change/5);
 		    change %= 5;
-		    int pennies = Math.round((int)change/1);
 		    currentMoney = 0;
 
 		    System.out.println("Dollars: " + dollars);
 		    System.out.println("Quarters: " + quarters);
 		    System.out.println("Dimes: " + dimes);
 		    System.out.println("Nickels: " + nickels);
-		    System.out.println("Pennies: " + pennies);
 		    System.out.printf("Current Balance: $%.2f\n", currentMoney);
 		    try {
 				vendingLogger.logChange(changeMoney, currentMoney);
@@ -169,5 +171,15 @@ public class VendingMachineCLI {
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
+	}
+	
+	public static boolean isProperDollarAmount(double moneyAmount) {
+		if (moneyAmount == 1 || moneyAmount == 2 || moneyAmount == 5 || moneyAmount == 10 || moneyAmount == 0) {
+			return true;
+		} else {
+			System.out.println("Error: Invalid Dollar Amount");
+			return false;
+		}
+		
 	}
 }
