@@ -7,4 +7,5 @@ public interface Vendable {
 	public int getCost();
 	public int getQuantity();
 	public void decrementQuantity();
+	public void printMessage();
 }

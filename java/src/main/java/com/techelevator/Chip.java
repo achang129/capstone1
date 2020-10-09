@@ -6,7 +6,7 @@ public class Chip extends VendingItem implements Vendable {
 		super(slotNumber, name, cost);
 	}
 
-	public void printChipMessage() {
+	public void printMessage() {
 		System.out.println("Crunch Crunch, Yum!");
 	}
 	

@@ -43,4 +43,7 @@ public class VendingItem implements Vendable{
 	public void decrementQuantity() {
 		this.quantity--;
 	}
+	public void printMessage() {
+		System.out.println("Yum!");
+	}
 }

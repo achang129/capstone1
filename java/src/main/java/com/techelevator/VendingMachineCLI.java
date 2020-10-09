@@ -1,13 +1,7 @@
 package com.techelevator;
 
 import java.util.List;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import com.techelevator.view.Menu;
 
@@ -60,46 +54,49 @@ public class VendingMachineCLI {
 							System.out.println("Current Amount Provided: $" + currentMoney);
 						}
 					} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
-						for (Vendable item : VendableItems.getVendablesList()) {
-							System.out.printf("---\nItem: %s   %s\nPrice: $%d\nQuantity Left: %d\n", 
-									item.getSlotNumber(), item.getName(), item.getCost(), item.getQuantity());
-						}
-						System.out.println("Enter the code for the item you want: ");
-						String itemInput = vendingScanner.nextLine();
-						int wantedItemIndex = 0;
-						Object[] array = VendableItems.getVendablesList().toArray();
-						
-						for (int i = 0; i < array.length; i++) {
-							if (array[i].equals(itemInput)) {
-								if (((Vendable) array[i]).getQuantity()>0) {//had to case these to Vendable from Object lol
-									if(((Vendable) array[i]).getCost()<=currentMoney) {
-										currentMoney -= ((Vendable) array[i]).getCost();
-										((Vendable) array[i]).decrementQuantity();
-										wantedItemIndex = 4;
-									}else {
-										if(wantedItemIndex!=4)
-											wantedItemIndex = 1;
-									}
-								}else {
-									if(wantedItemIndex!=4)
-										wantedItemIndex = 2;
-								}
-							}else {
-								if(wantedItemIndex!=4)
-									wantedItemIndex = 3;
+						List<Vendable> instanceList = VendableItems.getVendablesList();
+						for (Vendable item : instanceList) {
+							if(item.getQuantity()>0) {
+								System.out.printf("--%s   $%d\n%s\n", item.getSlotNumber(), item.getCost(), item.getName());
 							}
 						}
-						switch(wantedItemIndex) {
-						case 1:System.out.println("The item costs more than you inserted");
-						break;
-						case 2:System.out.println("The item is out of stock");
-						break;
-						case 3:System.out.println("No item is assigned to this slot");
-						break;
-						case 4:
+						System.out.println("Enter the slot code for the snack you would like: ");
+						String userRequestedSlot = vendingScanner.nextLine();
+						int canPurchase = 0;
+						Vendable itemObjectRequested = null;
 						
+						for (int i = 0; i < instanceList.size(); i++) {
+							if(instanceList.get(i).getSlotNumber().equalsIgnoreCase(userRequestedSlot)) {
+								canPurchase += 1;
+								if(instanceList.get(i).getQuantity()>0) {
+									canPurchase +=1;
+									if(instanceList.get(i).getCost()<=currentMoney) {
+										canPurchase+=1;
+										itemObjectRequested = instanceList.get(i);
+									}
+								}
+							}
 						}
-								
+						
+						switch (canPurchase) {
+						case 0:
+							System.out.println("No item exists in requested slot.");
+							break;
+						case 1:
+							System.out.println("None of requested item in stock.");
+							break;
+						case 2:
+							System.out.println("Not enough funds for item.");
+							break;
+						case 3:
+							itemObjectRequested.printMessage();
+							currentMoney -= itemObjectRequested.getCost();
+							itemObjectRequested.decrementQuantity();
+							
+							//this is where we would put the method to make a sales log file
+						default:
+							break;
+						}								
 					}
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {

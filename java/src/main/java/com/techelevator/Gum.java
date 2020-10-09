@@ -6,7 +6,7 @@ public class Gum extends VendingItem implements Vendable {
 		super(slotNumber, name, cost);
 	}
 	
-	public void printGumMessage() {
+	public void printMessage() {
 		System.out.println("Chew Chew, Yum!");
 	}
 	

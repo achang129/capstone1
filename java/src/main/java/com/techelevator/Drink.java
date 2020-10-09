@@ -6,7 +6,7 @@ public class Drink extends VendingItem implements Vendable {
 		super(slotNumber, name, cost);
 	}
 
-	public void printDrinkMessage() {
+	public void printMessage() {
 		System.out.println("Glug Glug, Yum!");
 	}
 	
