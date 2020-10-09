@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +20,7 @@ public class VendingMachineCLI {
 	private Menu menu;
 	double currentMoney = 0;
 	Scanner vendingScanner = new Scanner(System.in);
+	Logger vendingLogger = new Logger("Log.txt");
 	
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -41,7 +43,7 @@ public class VendingMachineCLI {
 					System.out.printf("\nCurrent Money Provided: $%.2f", currentMoney);
 					choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 					if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
-						System.out.println("Enter Money in Whole Dollar Amounts");
+						System.out.println("\nEnter Money in Whole Dollar Amounts");
 						System.out.println("Enter 0 to Stop Feeding Money");
 						while (true) {
 							System.out.print("\n$");
@@ -50,14 +52,20 @@ public class VendingMachineCLI {
 							if (moneyAmount == 0) {
 								break;
 							}
+							double priorMoney = currentMoney;
 							currentMoney += moneyAmount;
+							try {
+								vendingLogger.logFeed(priorMoney, currentMoney);
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
 							System.out.printf("Current Amount Provided: $%.2f", currentMoney);
 						}
 					} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 						List<Vendable> instanceList = VendableItems.getVendablesList();
 						for (Vendable item : instanceList) {
-							if(item.getQuantity()>0) {
-								System.out.printf("--%s   $%.2f\n%s\n", item.getSlotNumber(), item.getCost(), item.getName());
+							if(item.getQuantity()>=0) {
+								System.out.printf("--%s   $%.2f\n%s | %d Left\n", item.getSlotNumber(), item.getCost(), item.getName(), item.getQuantity());
 							}
 						}
 						System.out.println("Enter the slot code for the snack you would like: ");
@@ -89,11 +97,17 @@ public class VendingMachineCLI {
 							System.out.println("Not enough funds for item.");
 							break;
 						case 3:
+							System.out.printf("\nDispensing %s for $%.2f\n", itemObjectRequested.getName(), itemObjectRequested.getCost());
 							itemObjectRequested.printMessage();
+							double beforePayment = currentMoney;
 							currentMoney -= itemObjectRequested.getCost();
 							itemObjectRequested.decrementQuantity();
 							
-							//this is where we would put the method to make a sales log file
+							try {
+								vendingLogger.logPurchase(itemObjectRequested.getName(), itemObjectRequested.getSlotNumber(), beforePayment, currentMoney);
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
 						default:
 							break;
 						}								
@@ -101,6 +115,7 @@ public class VendingMachineCLI {
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
 					if (currentMoney > 0) {
+						double changeMoney = currentMoney;
 						int change = (int)(Math.ceil(currentMoney*100));
 					    int dollars = Math.round((int)change/100);
 					    change %= 100;
@@ -119,6 +134,11 @@ public class VendingMachineCLI {
 					    System.out.println("Nickels: " + nickels);
 					    System.out.println("Pennies: " + pennies);
 					    System.out.printf("Current Balance: $%.2f\n", currentMoney);
+					    try {
+							vendingLogger.logChange(changeMoney, currentMoney);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
