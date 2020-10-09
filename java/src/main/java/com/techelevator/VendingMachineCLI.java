@@ -144,7 +144,9 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 				System.out.println("Thank You For Your Patronage!");
 				break;
-			} // Add optional sales report option here
+			} else if (choice.equals("4")) {
+				// Add optional sales report functionality here
+			}
 		}
 	}
 
