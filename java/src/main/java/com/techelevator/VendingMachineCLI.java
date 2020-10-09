@@ -7,7 +7,10 @@ import java.util.Scanner;
 import com.techelevator.view.Menu;
 
 public class VendingMachineCLI {
-
+	//TODO make sure any input given either is correct for the input or tells
+	//user it was an incorrect entry and reprompts
+	//also make log.txt persist by the logger appending instead of overwriting
+	//make hidden menu option
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
@@ -33,7 +36,7 @@ public class VendingMachineCLI {
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) { 
 				//here is the showing of the products
 				for (Vendable item : VendableItems.getVendablesList()) {
-					System.out.printf("---\nItem: %s   %s\nPrice: $%d\nQuantity Left: %d\n", 
+					System.out.printf("---\nItem: %s   %s\nPrice: $%.2f\nQuantity Left: %d\n", 
 							item.getSlotNumber(), item.getName(), item.getCost(), item.getQuantity());
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
@@ -48,8 +51,15 @@ public class VendingMachineCLI {
 						while (true) {
 							System.out.print("\n$");
 							String moneyInput = vendingScanner.nextLine();
-							int moneyAmount = Integer.parseInt(moneyInput);
-							if (moneyAmount == 0) {
+							int moneyAmount = 0;
+							try{
+								moneyAmount = Integer.parseInt(moneyInput);
+							}catch(NumberFormatException e) {
+								System.out.printf("Error: %s\n", e.getLocalizedMessage());
+								cashout();
+								run();
+							}
+							if (moneyAmount <= 0) {
 								break;
 							}
 							double priorMoney = currentMoney;
@@ -114,32 +124,7 @@ public class VendingMachineCLI {
 					}
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
-					if (currentMoney > 0) {
-						double changeMoney = currentMoney;
-						int change = (int)(Math.ceil(currentMoney*100));
-					    int dollars = Math.round((int)change/100);
-					    change %= 100;
-					    int quarters = Math.round((int)change/25);
-					    change %= 25;
-					    int dimes = Math.round((int)change/10);
-					    change %= 10;
-					    int nickels = Math.round((int)change/5);
-					    change %= 5;
-					    int pennies = Math.round((int)change/1);
-					    currentMoney = 0;
-	
-					    System.out.println("Dollars: " + dollars);
-					    System.out.println("Quarters: " + quarters);
-					    System.out.println("Dimes: " + dimes);
-					    System.out.println("Nickels: " + nickels);
-					    System.out.println("Pennies: " + pennies);
-					    System.out.printf("Current Balance: $%.2f\n", currentMoney);
-					    try {
-							vendingLogger.logChange(changeMoney, currentMoney);
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
+					cashout();
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 				System.out.println("Thank You For Your Patronage!");
@@ -149,7 +134,36 @@ public class VendingMachineCLI {
 			}
 		}
 	}
+	
+	public void cashout() {//this is used to either cash out normally or to force cashout if error occurs so user does not lose their money
+		if (currentMoney > 0) {
+			double changeMoney = currentMoney;
+			int change = (int)(Math.ceil(currentMoney*100));
+		    int dollars = Math.round((int)change/100);
+		    change %= 100;
+		    int quarters = Math.round((int)change/25);
+		    change %= 25;
+		    int dimes = Math.round((int)change/10);
+		    change %= 10;
+		    int nickels = Math.round((int)change/5);
+		    change %= 5;
+		    int pennies = Math.round((int)change/1);
+		    currentMoney = 0;
 
+		    System.out.println("Dollars: " + dollars);
+		    System.out.println("Quarters: " + quarters);
+		    System.out.println("Dimes: " + dimes);
+		    System.out.println("Nickels: " + nickels);
+		    System.out.println("Pennies: " + pennies);
+		    System.out.printf("Current Balance: $%.2f\n", currentMoney);
+		    try {
+				vendingLogger.logChange(changeMoney, currentMoney);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		Menu menu = new Menu(System.in, System.out);
