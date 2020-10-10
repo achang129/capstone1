@@ -7,7 +7,7 @@ import java.util.Scanner;
 import com.techelevator.view.Menu;
 
 public class VendingMachineCLI {
-	//make hidden menu option
+	
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
@@ -25,6 +25,10 @@ public class VendingMachineCLI {
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
+	}
+	
+	public VendingMachineCLI() {
+		
 	}
 
 	public void run() {
@@ -67,10 +71,7 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-
-
-
-
+	
 	public void feedMoney() {
 		System.out.println("\nEnter Money in Whole Dollar Amounts");
 		System.out.println("-- $1, $2, $5, or $10 --");
@@ -182,22 +183,21 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-
-	public static void main(String[] args) {
-
-		Menu menu = new Menu(System.in, System.out);
-		VendingMachineCLI cli = new VendingMachineCLI(menu);
-		cli.run();
-
-	}
-
-	public static boolean isProperDollarAmount(double moneyAmount) {
+	
+	public boolean isProperDollarAmount(double moneyAmount) {
 		if (moneyAmount == 1 || moneyAmount == 2 || moneyAmount == 5 || moneyAmount == 10 || moneyAmount == 0) {
 			return true;
 		} else {
 			System.out.println("Error: Invalid Dollar Amount");
 			return false;
 		}
+	}
+
+	public static void main(String[] args) {
+
+		Menu menu = new Menu(System.in, System.out);
+		VendingMachineCLI cli = new VendingMachineCLI(menu);
+		cli.run();
 
 	}
 }
