@@ -16,7 +16,7 @@ public class VendableItems {
 	}
 		
 	private static List<Vendable> setVendablesList() {
-		File inputFile = new File("vendingmachine.csv");
+		File inputFile = new File("vendingmachine.csv");//change this to change what items are vendable
 		List<Vendable> resultList = new ArrayList<Vendable>();
 
 		try (Scanner input = new Scanner(inputFile);) {
