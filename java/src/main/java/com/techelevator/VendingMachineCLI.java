@@ -7,9 +7,6 @@ import java.util.Scanner;
 import com.techelevator.view.Menu;
 
 public class VendingMachineCLI {
-	//TODO make sure any input given either is correct for the input or tells
-	//user it was an incorrect entry and reprompts
-	//also make log.txt persist by the logger appending instead of overwriting
 	//make hidden menu option
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
@@ -20,12 +17,12 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT, MAIN_MENU_OPTION_GET_LOG };
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
-	
+
 	private Menu menu;
 	double currentMoney = 0;
 	Scanner vendingScanner = new Scanner(System.in);
 	Logger vendingLogger = new Logger();
-	
+
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
 	}
@@ -34,10 +31,10 @@ public class VendingMachineCLI {
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
-			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) { 
+			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				//here is the showing of the products
 				for (Vendable item : VendableItems.getVendablesList()) {
-					System.out.printf("---\nItem: %s   %s\nPrice: $%.2f\nQuantity Left: %d\n", 
+					System.out.printf("---\nItem: %s   %s\nPrice: $%.2f\nQuantity Left: %d\n",
 							item.getSlotNumber(), item.getName(), item.getCost(), item.getQuantity());
 				}
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
@@ -49,8 +46,8 @@ public class VendingMachineCLI {
 					if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 						feedMoney();
 					} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
-						purchase();							
-					} 
+						purchase();
+					}
 				}
 				if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
 					cashout();
@@ -70,10 +67,10 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	public void feedMoney() {
 		System.out.println("\nEnter Money in Whole Dollar Amounts");
 		System.out.println("-- $1, $2, $5, or $10 --");
@@ -105,7 +102,7 @@ public class VendingMachineCLI {
 			System.out.printf("Current Amount Provided: $%.2f", currentMoney);
 		}
 	}
-	
+
 	public void purchase() {
 		List<Vendable> instanceList = VendableItems.getVendablesList();
 		for (Vendable item : instanceList) {
@@ -117,7 +114,7 @@ public class VendingMachineCLI {
 		String userRequestedSlot = vendingScanner.nextLine();
 		int canPurchase = 0;
 		Vendable itemObjectRequested = null;
-		
+
 		for (int i = 0; i < instanceList.size(); i++) {
 			if(instanceList.get(i).getSlotNumber().equalsIgnoreCase(userRequestedSlot)) {
 				canPurchase += 1;
@@ -130,7 +127,7 @@ public class VendingMachineCLI {
 				}
 			}
 		}
-		
+
 		switch (canPurchase) {
 		case 0:
 			System.out.println("No item exists in requested slot.");
@@ -147,7 +144,7 @@ public class VendingMachineCLI {
 			double beforePayment = currentMoney;
 			currentMoney -= itemObjectRequested.getCost();
 			itemObjectRequested.decrementQuantity();
-			
+
 			try {
 				vendingLogger.logPurchase(itemObjectRequested.getName(), itemObjectRequested.getSlotNumber(), beforePayment, currentMoney);
 			} catch (FileNotFoundException e) {
@@ -155,10 +152,10 @@ public class VendingMachineCLI {
 			}
 		default:
 			break;
-		}	
+		}
 	}
-	
-	
+
+
 	public void cashout() {//this is used to either cash out normally or to force cashout if error occurs so user does not lose their money
 		if (currentMoney > 0) {
 			double changeMoney = currentMoney;
@@ -185,15 +182,15 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
-		
+
 	}
-	
+
 	public static boolean isProperDollarAmount(double moneyAmount) {
 		if (moneyAmount == 1 || moneyAmount == 2 || moneyAmount == 5 || moneyAmount == 10 || moneyAmount == 0) {
 			return true;
@@ -201,6 +198,6 @@ public class VendingMachineCLI {
 			System.out.println("Error: Invalid Dollar Amount");
 			return false;
 		}
-		
+
 	}
 }
