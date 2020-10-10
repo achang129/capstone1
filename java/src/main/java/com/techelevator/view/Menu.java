@@ -44,9 +44,9 @@ public class Menu {
 
 	private void displayMenuOptions(Object[] options) {
 		out.println();
-		for (int i = 0; i < options.length - 1; i++) {
+		for (int i = 0; i < options.length; i++) {
 			int optionNum = i + 1;
-			if (optionNum!=4)
+			if (i != 3)
 				out.println(optionNum + ") " + options[i]);
 		}
 		out.print("\nPlease choose an option >>> ");
@@ -55,3 +55,4 @@ public class Menu {
 	
 	
 }
+
