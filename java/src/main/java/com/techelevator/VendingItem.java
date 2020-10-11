@@ -13,6 +13,10 @@ public class VendingItem implements Vendable{
 		this.cost = cost;
 	}
 
+	public VendingItem() {
+		
+	}
+
 	public String getSlotNumber() {
 		return slotNumber;
 	}
@@ -42,6 +46,9 @@ public class VendingItem implements Vendable{
 	}
 	public void decrementQuantity() {
 		this.quantity--;
+		if (this.quantity < 0) {
+			this.quantity = 0;
+		}
 	}
 	public void printMessage() {
 		System.out.println("Yum!");
