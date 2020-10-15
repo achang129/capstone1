@@ -1,0 +1,5 @@
+Double toBeTruncated = new Double("3.5789055");
+
+Double truncatedDouble = BigDecimal.valueOf(toBeTruncated)
+    .setScale(3, RoundingMode.HALF_UP)
+    .doubleValue();
