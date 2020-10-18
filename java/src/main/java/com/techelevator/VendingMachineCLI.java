@@ -86,9 +86,9 @@ public class VendingMachineCLI {
 					moneyAmount = 0;
 				}
 			}catch(NumberFormatException e) {
-				System.out.printf("Error: %s\nReturning Money and Restarting\n", e.getLocalizedMessage());
+				System.out.printf("Error possible haxorz detected : %s\nReturning Money and Restarting\n", e.getLocalizedMessage());
 				cashout();
-				run();
+				break;
 			}
 			if (moneyAmount <= 0) {
 				break;
